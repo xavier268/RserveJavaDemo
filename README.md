@@ -19,5 +19,5 @@ Configuration is done in RserveManager, where you need to specify the Rserve bin
 
 ## Next steps
 
-* Implement automating source uploding
+* Implement automating source uploading
 * Implement autoconfig in an EC2 instance
