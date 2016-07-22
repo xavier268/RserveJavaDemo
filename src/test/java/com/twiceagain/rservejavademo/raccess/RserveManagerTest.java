@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.twiceagain.reservejavademo;
+package com.twiceagain.rservejavademo.raccess;
 
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.junit.Test;
 import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.RList;
 import org.rosuda.REngine.Rserve.RConnection;
@@ -17,15 +18,17 @@ import org.rosuda.REngine.Rserve.RserveException;
  *
  * @author xavier
  */
-public class MainTest {
-    private static final Logger LOG = Logger.getLogger(MainTest.class.getName());
+public class RserveManagerTest {
+
+    private static final Logger LOG = Logger.getLogger(RserveManagerTest.class.getName());
+    
     private static int maxretry = 0;
     /**
      * Run a test connection with the Rserve daemon
-     * @param args the command line arguments
      * @throws java.lang.InterruptedException
      */
-    public static void main(String[] args) throws InterruptedException  { 
+    @Test
+    public  void test1() throws InterruptedException  { 
         if(maxretry > 3) {
             LOG.warning("Max retry reached - aborting");
             System.exit(-1);
@@ -51,17 +54,22 @@ public class MainTest {
             c.close();        
             LOG.info("Sucessfully closed Rserve session");
             
-            // Stopping Rserve
-            RserveManager.stop();
+            
             
         } catch (RserveException ex) {
             LOG.warning("Rserve was not runnning ... attempting to restart it");
             RserveManager.start();
-            main(args);
+            // retry ...
+            test1();
         } catch (REXPMismatchException ex) {
-            Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.log(Level.SEVERE, null, ex);
             System.exit(-1);
+        } finally {
+            // Stopping Rserve
+            RserveManager.stop();
         }
     }
+    
+
     
 }
