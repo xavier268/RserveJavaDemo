@@ -11,20 +11,22 @@ import org.junit.Test;
  *
  * @author xavier
  */
-public class FeatureExtractorTest {
+public class PageFeaturesTest {
 
-    public FeatureExtractorTest() {
+    public PageFeaturesTest() {
     }
 
     /**
-     * Test of toString method, of class FeatureExtractor.
+     * Test of toString method, of class PageFeatures.
      *
      * @throws java.lang.InterruptedException
      */
     @Test
     public void testToString() throws InterruptedException {
-        FeatureExtractor fe = new FeatureExtractor("http://www.google.com");
+        PageFeatures fe = new PageFeatures("http://www.amazon.com");
         System.out.println(fe);
+        Long c = fe.getTreeRoot().streamChildren().count();
+        System.out.printf("Counted %d children\n",c);
         fe.close();
     }
 

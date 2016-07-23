@@ -6,27 +6,36 @@
 package com.twiceagain.rservejavademo.extract;
 
 import com.twiceagain.rservejavademo.webaccess.BasicDriver;
+import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
- * Utilities to extract features from the nodes of the provided webpage.
+ * Compute the feature tree of a full page.
  *
  * @author xavier
  */
-public class FeatureExtractor {
+public class PageFeatures {
 
     protected WebDriver wd;
-    protected FWebElement tree;
+    protected FTree tree;
+    protected String url;
 
-    public FeatureExtractor(WebDriver wd) {
+/**
+ * Use an open existing page.
+ * @param wd 
+ */
+    public PageFeatures(WebDriver wd) {
         this.wd = wd;
         initTree();
     }
-
-    public FeatureExtractor(String url) {
+/**
+ * 
+ * @param url 
+ */
+    public PageFeatures(String url) {
         if (wd == null) {
             wd = BasicDriver.getDriver();
         }
@@ -35,8 +44,9 @@ public class FeatureExtractor {
     }
     
     private void initTree() {
-        WebElement we = wd.findElement(By.tagName("html"));        
-        tree = new FWebElement(we,null);
+        WebElement we = wd.findElement(By.tagName("html"));  
+        url = wd.getCurrentUrl();
+        tree = new FTree(we,null);        
     }
     
     public void close() {
@@ -49,6 +59,18 @@ public class FeatureExtractor {
     @Override
     public String toString() {
         return (tree.toString());
+    }
+
+    public WebDriver getDriver() {
+        return wd;
+    }
+
+    public FTree getTreeRoot() {
+        return tree;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     
