@@ -5,9 +5,7 @@
  */
 package com.twiceagain.rservejavademo.extract;
 
-import com.twiceagain.rservejavademo.webaccess.BasicDriver;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 
 /**
  *
@@ -25,11 +23,9 @@ public class FeatureExtractorTest {
      */
     @Test
     public void testToString() throws InterruptedException {
-        WebDriver wd = BasicDriver.getDriver();
-        wd.get("http://www.google.fr");
-        System.out.println((new FeatureExtractor(wd)));
-        Thread.sleep(5000);
-        wd.close();
+        FeatureExtractor fe = new FeatureExtractor("http://www.google.com");
+        System.out.println(fe);
+        fe.close();
     }
 
 }

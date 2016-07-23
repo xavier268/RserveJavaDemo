@@ -19,9 +19,11 @@ import org.openqa.selenium.WebElement;
 public class FeatureExtractor {
 
     protected WebDriver wd;
+    protected FWebElement tree;
 
     public FeatureExtractor(WebDriver wd) {
         this.wd = wd;
+        initTree();
     }
 
     public FeatureExtractor(String url) {
@@ -29,23 +31,26 @@ public class FeatureExtractor {
             wd = BasicDriver.getDriver();
         }
         wd.get(url);
+        initTree();
+    }
+    
+    private void initTree() {
+        WebElement we = wd.findElement(By.tagName("html"));        
+        tree = new FWebElement(we,null);
+    }
+    
+    public void close() {
+        if(wd != null) {
+            wd.close();
+            wd=null;
+        }
     }
 
     @Override
     public String toString() {
-        WebElement we = wd.findElement(By.tagName("html"));
-        return toString(we);
+        return (tree.toString());
     }
 
-    public String toString(WebElement we) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(new NodeFeatures(we));
-        sb.append("\n");
-        List<WebElement> lwe = we.findElements(By.xpath("./*"));
-        for (WebElement w : lwe) {
-            sb.append(toString(w));            
-        }
-        return sb.toString();
-    }
+    
 
 }
