@@ -25,7 +25,11 @@
  */
 package com.twiceagain.rservejavademo.webaccess;
 
+import java.util.List;
+import java.util.Map;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 /**
@@ -34,19 +38,38 @@ import org.openqa.selenium.chrome.ChromeDriver;
  *
  * @author xavier
  */
-public class BasicDriver  {
-    
+public class BasicDriver {
+
     private BasicDriver() {
     }
-    
+
     /**
      * Return a valid driver
-     * @return 
+     *
+     * @return
      */
-    public static WebDriver getDriver() {   
+    public static WebDriver getDriver() {
         // Required to help locate the binary that needs to be  downloaded manually :-(
         // See : https://sites.google.com/a/chromium.org/chromedriver/getting-started
         System.setProperty("webdriver.chrome.driver", "/home/xavier/bin/chromedriver");
         return new ChromeDriver();
+    }
+
+    /**
+     * Return the list of all attributes of a given WebElement.
+     * I added this capability for efficiency, since it is 
+     * not available from Selenium api directly.
+     * @param wd
+     * @param we
+     * @return
+     */
+    public static Map<String,String> getAttributes(WebDriver wd, WebElement we) {
+        // JavaScript
+        String js = "var items = {};"
+                + " for (index = 0; index < arguments[0].attributes.length; ++index) "
+                + "{ items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value };"
+                + " return items;";
+        JavascriptExecutor jse =(JavascriptExecutor)wd;
+        return (Map<String, String>)  jse.executeScript(js,we);
     }
 }

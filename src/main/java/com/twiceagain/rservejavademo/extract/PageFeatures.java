@@ -44,8 +44,10 @@ public class PageFeatures {
     }
     
     private void initTree() {
-        WebElement we = wd.findElement(By.tagName("html"));  
+        System.out.println("Starting to analyse page, please be patient ...");
+        WebElement we = wd.findElement(By.xpath("/*"));  // Start at the root, usually html
         url = wd.getCurrentUrl();
+        System.out.println("Loaded page : " + url);
         tree = new FTree(we,null);        
     }
     
@@ -58,7 +60,7 @@ public class PageFeatures {
 
     @Override
     public String toString() {
-        return (tree.toString());
+        return (tree.toStringAll());
     }
 
     public WebDriver getDriver() {
