@@ -5,14 +5,18 @@
  */
 package com.twiceagain.rservejavademo.extract;
 
+import com.twiceagain.rservejavademo.webaccess.BasicDriver;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -37,11 +41,9 @@ public class FTree {
     private int area = 0;
     private double ratio = 0;
     private String toStringCache = null;
-    private List<String> classList;
-    private String id = "";
-    private String type = "";
+    private final List<String> classList = new ArrayList<>();
     private String text = "";
-    private String href = "";
+    private final Map<String,String> attributes = new HashMap<>();
     
 
     /**
@@ -49,17 +51,17 @@ public class FTree {
      */
     private int depth = 0;
     private final List<String> path = new ArrayList<>();
-    private String src = "";
+   
 
-    public FTree(WebElement we) {
-        initFTree(we, null);
+    public FTree(WebDriver wd, WebElement we) {
+        initFTree(wd, we, null);
     }
 
-    public FTree(WebElement we, FTree parent) {
-        initFTree(we, parent);
+    public FTree(WebDriver wd, WebElement we, FTree parent) {
+        initFTree(wd, we, parent);
     }
 
-    private void initFTree(WebElement we, FTree parent) {
+    private void initFTree(WebDriver wd, WebElement we, FTree parent) {
         
         if (parent != null) {
             this.parent = parent;
@@ -84,34 +86,17 @@ public class FTree {
                 ratio = (getHeight() == 0) ? 0 : getWidth() / getHeight();
                 text = we.getText();
             }
-            id = we.getAttribute("id");
-            if (getId() == null) {
-                id = "";
-            }
-            type = we.getAttribute("type");
-            if (getType() == null) {
-                type = "";
-            }
-            String cl = we.getAttribute("class");
+            attributes.putAll(BasicDriver.getAttributes(wd, we));
+            String cl = attributes.get("class");
             if (cl != null) {
-                classList = Arrays.asList(cl.split("\\s+"));
-            } else {
-                classList = new ArrayList();
-            }
+                classList.addAll(Arrays.asList(cl.split("\\s+")));
+            } 
 
-            href = we.getAttribute("href");
-            if (href == null) {
-                href = "";
-            }
-
-            src = we.getAttribute("src");
-            if (src == null) {
-                src = "";
-            }
+            
 
             List<WebElement> lwe = we.findElements(By.xpath("./*"));
             for (WebElement w : lwe) {
-                FTree cc = new FTree(w, this);
+                FTree cc = new FTree(wd, w, this);
                 getChildren().add(cc);
             }
         }
@@ -273,14 +258,14 @@ public class FTree {
      * @return the id
      */
     public String getId() {
-        return id;
+        return attributes.get("id") == null ? "":attributes.get("id");
     }
 
     /**
      * @return the type
      */
     public String getType() {
-        return type;
+        return attributes.get("type") == null ? "":attributes.get("type");
     }
 
     /**
@@ -295,11 +280,11 @@ public class FTree {
     }
 
     public String getHref() {
-        return href;
+        return attributes.get("href") == null ? "":attributes.get("href");
     }
 
     public String getSrc() {
-        return src;
+        return attributes.get("src") == null ? "":attributes.get("src");
     }
     
     /**

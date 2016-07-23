@@ -5,6 +5,7 @@
  */
 /**
  * Extract features associated with the nodes of a webpage by constructing a feature tree 
- * that mirror the dom.
+ * that mirror the dom. The tree and the nodes are FTree objects. 
+ * Once constructed, they do not keep nor contain any references to the underlying WebElements.
  */
 package com.twiceagain.rservejavademo.extract;

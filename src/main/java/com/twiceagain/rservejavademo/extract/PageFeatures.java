@@ -6,8 +6,6 @@
 package com.twiceagain.rservejavademo.extract;
 
 import com.twiceagain.rservejavademo.webaccess.BasicDriver;
-import java.util.ArrayList;
-import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -48,7 +46,7 @@ public class PageFeatures {
         WebElement we = wd.findElement(By.xpath("/*"));  // Start at the root, usually html
         url = wd.getCurrentUrl();
         System.out.println("Loaded page : " + url);
-        tree = new FTree(we,null);        
+        tree = new FTree(wd,we,null);        
     }
     
     public void close() {

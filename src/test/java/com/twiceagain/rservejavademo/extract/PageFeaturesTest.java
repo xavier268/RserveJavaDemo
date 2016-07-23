@@ -5,7 +5,9 @@
  */
 package com.twiceagain.rservejavademo.extract;
 
+import java.util.stream.Collectors;
 import org.junit.Test;
+import org.junit.*;
 
 /**
  *
@@ -13,7 +15,15 @@ import org.junit.Test;
  */
 public class PageFeaturesTest {
 
+    static PageFeatures fe;
+
     public PageFeaturesTest() {
+    }
+
+    @BeforeClass
+    public static void prepare() {
+       // fe = new PageFeatures("https://news.google.fr/");
+        fe = new PageFeatures("http://www.google.com/");
     }
 
     /**
@@ -23,10 +33,25 @@ public class PageFeaturesTest {
      */
     @Test
     public void testToString() throws InterruptedException {
-        PageFeatures fe = new PageFeatures("http://www.amazon.com");
-        System.out.println(fe);
+        System.out.printf("Printing the PageFeatures object\n%s",fe);
         Long c = fe.getTreeRoot().streamChildren().count();
-        System.out.printf("Counted %d children\n",c);
+        System.out.printf("\nCounted %d children\n", c);
+    }
+    
+    @Test
+    public void testFiltering() {
+        System.out.printf("Printing the filtered objects (visible)\n");
+        String s = fe.getTreeRoot()
+                .streamChildren()
+                .filter(FTree::isVisible)
+                .map(FTree::toString)
+                .collect(Collectors.joining("\n"));
+        System.out.println(s);
+        
+    }
+
+    @AfterClass
+    public static void cleanup() {
         fe.close();
     }
 

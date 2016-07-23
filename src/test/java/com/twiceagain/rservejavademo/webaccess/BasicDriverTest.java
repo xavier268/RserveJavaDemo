@@ -38,6 +38,16 @@ public class BasicDriverTest {
         wd.close();        
     }
     
+    @Test
+    public void testAttributes() {
+        WebDriver wd = BasicDriver.getDriver();
+        wd.get("http://www.google.fr");   
+        WebElement we = wd.findElement(By.tagName("input"));
+        System.out.println("Listing attributes : "+BasicDriver.getAttributes(wd, we));
+        wd.close();
+        
+    }
+    
    
 
     

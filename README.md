@@ -7,18 +7,14 @@ Required :
 
 * R
 * Rserve (can be installed via R as a package)
-* Chrome or Firefox with correct drivers for the installed version (currently using Chrome, waiting for FireFox47 driver to stabilize)
+* Chrome or Firefox with correct webdrivers for the installed version (currently using Chrome 'marionette', waiting for FireFox47 driver to stabilize)
 
-## Configuration
+## General idea
 
-Configuration is done in RserveManager, where you need to specify the Rserve binary and the R_HOME location (R Home Directory).
+The idea is to collect in a structured way "features" from a web page, and then, apply to them ML algorithms, possibly in R.
 
-## Features implemented
+## What is working so far
 
-* Analyse a web page, extracting features of the webelements
-* Launch Rserve from java if not running
-* Close Rserve from java (the server, not only the connection)
+* Analyse a web page, extracting features from the webelements
+* Launch Rserve from java if not running, stop it from java, eval any R script from java.
 
-## Next steps
-
-* Format web page features extracted for ML processing in R
